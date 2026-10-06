@@ -1,0 +1,11 @@
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\bin\Debug\net10.0\Talabat.Services.deps.json
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\bin\Debug\net10.0\Talabat.Services.dll
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\bin\Debug\net10.0\Talabat.Services.pdb
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\obj\Debug\net10.0\Talabat.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\obj\Debug\net10.0\Talabat.Services.AssemblyInfoInputs.cache
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\obj\Debug\net10.0\Talabat.Services.AssemblyInfo.cs
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\obj\Debug\net10.0\Talabat.Services.csproj.CoreCompileInputs.cache
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\obj\Debug\net10.0\Talabat.Services.dll
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\obj\Debug\net10.0\refint\Talabat.Services.dll
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\obj\Debug\net10.0\Talabat.Services.pdb
+C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Services\obj\Debug\net10.0\ref\Talabat.Services.dll

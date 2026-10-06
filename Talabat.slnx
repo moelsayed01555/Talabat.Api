@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="talabat.apis/talabat.apis.csproj" DisplayName="Talabat.Apis" />
+  <Project Path="Talabat.Core/Talabat.Core.csproj" Id="7550b8e6-6b15-4781-8016-280dc46438ca" />
+  <Project Path="Talabat.Repository/Talabat.Repository.csproj" Id="ef9f610c-fc5c-4bac-bfb6-b0462705601b" />
+  <Project Path="Talabat.Services/Talabat.Services.csproj" Id="632a26e8-c648-4bd3-bd86-389d32475f21" />
+</Solution>

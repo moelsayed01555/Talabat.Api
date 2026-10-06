@@ -1,0 +1,29 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
+using Talabat.Core.Entites;
+
+namespace Talabat.Repository.Data
+{
+    public class StoreContext : DbContext
+    {
+        public StoreContext(DbContextOptions<StoreContext> options) : base(options) { }
+
+        // مش مضطرين نعمل اوفررليد ل onconfiguring
+        // عشان ضيفنا ال service in program.cs in the DI container 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+
+         
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductBrand> ProductBrands { get; set; }
+        
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+    }
+}
