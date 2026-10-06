@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PpYbHXmtCLg=",
+  "dgSpecHash": "dCd8QJYxGQs=",
   "success": true,
-  "projectFilePath": "C:\\Users\\IT\\OneDrive\\Desktop\\projects\\Talabat\\Talabat.Repository\\Talabat.Repository.csproj",
+  "projectFilePath": "C:\\Users\\IT\\OneDrive\\Desktop\\Apps\\Talabat\\Talabat.Repository\\Talabat.Repository.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\IT\\.nuget\\packages\\azure.core\\1.50.0\\azure.core.1.50.0.nupkg.sha512",
     "C:\\Users\\IT\\.nuget\\packages\\azure.identity\\1.17.1\\azure.identity.1.17.1.nupkg.sha512",
