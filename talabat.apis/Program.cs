@@ -1,5 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
+using Talabat.Core.Entites;
+using Talabat.Core.Repositories.Contract;
+using Talabat.Repository;
 using Talabat.Repository.Data;
 
 namespace Talabat.Apis
@@ -25,6 +28,15 @@ namespace Talabat.Apis
             {                                                                          //Connection string (name : DefaultConnection) is stored in appsettings.json file
                 options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            // allow DI for the repository
+            #region بدل كل ده هننفز اللي تحتها
+            //webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>,GenericRepository<Product>>();
+            //webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>,GenericRepository<ProductBrand>>();
+            //webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>,GenericRepository<ProductCategory>>();
+            #endregion
+
+            webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));  // allow DI for the repository
 
             #endregion
 
