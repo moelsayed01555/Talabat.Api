@@ -16,6 +16,29 @@ namespace talabat.apis.Controllers
             _productsRpo = productsRpo;
         }
 
+        // api/GetProducts
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        {
+            var result = await _productsRpo.GetAllAsync();
+
+            return Ok(result);
+        }
+
+
+        // api/GetProduct/id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Product>> GetProductId(int id)
+        {
+            var result = await _productsRpo.GetAsync(id);
+
+            if(result == null)
+                return NotFound(new ProblemDetails { Title = "Not Found", Detail = $"Product with id {id} not found" });
+
+            return Ok(result);
+        }
+
+
 
     }
 }

@@ -8,7 +8,7 @@ namespace Talabat.Core.Entites
     {
         public string Name { get; set; }
 
-        public ICollection<Product> Products { get; set; } = new HashSet<Product>(); // Navigation Property
+        //public  ICollection<Product> Products { get; set; } = new HashSet<Product>(); // Navigation Property
 
 
     }

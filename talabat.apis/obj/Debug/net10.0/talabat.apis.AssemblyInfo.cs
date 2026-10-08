@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("b7453406-0996-45a2-bd8d-dee4f03770cc")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("talabat.apis")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a593bb8fe789177af5eee6f7597e3343fc478ef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7c39528f192de148ce802829099df7bf7d33ecac")]
 [assembly: System.Reflection.AssemblyProductAttribute("talabat.apis")]
 [assembly: System.Reflection.AssemblyTitleAttribute("talabat.apis")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

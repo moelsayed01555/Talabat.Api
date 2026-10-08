@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace Talabat.Repository.Data.Migrations
+namespace Talabat.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class ProductModule : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,9 +1,11 @@
 
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using Talabat.Core.Entites;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
+using System.Text.Json.Serialization;
 
 namespace Talabat.Apis
 {
@@ -26,6 +28,7 @@ namespace Talabat.Apis
             // allow DI for the database context
             webApplicationBuilder.Services.AddDbContext<StoreContext>(options =>       // use options because of parameterized constructor in StoreContext class
             {                                                                          //Connection string (name : DefaultConnection) is stored in appsettings.json file
+                //options.UseLazyLoadingProxies();  // enable lazy loading for navigation properties in the entities
                 options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
@@ -37,6 +40,11 @@ namespace Talabat.Apis
             #endregion
 
             webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));  // allow DI for the repository
+
+            webApplicationBuilder.Services.AddControllers().AddJsonOptions(options =>
+                   {
+                       options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                   });
 
             #endregion
 

@@ -11,3 +11,18 @@ C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Core\obj\Debug\net10.0\ref
 C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Core\obj\Debug\net10.0\Talabat.Core.pdb
 C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Core\obj\Debug\net10.0\Talabat.Core.genruntimeconfig.cache
 C:\Users\IT\OneDrive\Desktop\projects\Talabat\Talabat.Core\obj\Debug\net10.0\ref\Talabat.Core.dll
+D:\.Net Moo\projects\Talabat.Core\bin\Debug\net10.0\Talabat.Core.deps.json
+D:\.Net Moo\projects\Talabat.Core\bin\Debug\net10.0\Talabat.Core.runtimeconfig.json
+D:\.Net Moo\projects\Talabat.Core\bin\Debug\net10.0\Talabat.Core.dll
+D:\.Net Moo\projects\Talabat.Core\bin\Debug\net10.0\Talabat.Core.pdb
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.AssemblyInfoInputs.cache
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.AssemblyInfo.cs
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.csproj.CoreCompileInputs.cache
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.sourcelink.json
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.dll
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\refint\Talabat.Core.dll
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.pdb
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.genruntimeconfig.cache
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\ref\Talabat.Core.dll
+D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat..EF9EA6A7.Up2Date

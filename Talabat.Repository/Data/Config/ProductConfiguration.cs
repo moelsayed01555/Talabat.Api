@@ -26,11 +26,11 @@ namespace Talabat.Repository.Data.Config
 
             // reltionships
             builder.HasOne(p => p.Brand)
-                .WithMany(B => B.Products)
+                .WithMany()
                 .HasForeignKey(p => p.BrandId);
 
             builder.HasOne(p => p.Category)
-                 .WithMany(C => C.Products)
+                 .WithMany()
                  .HasForeignKey(c => c.CategoryId);
 
         }

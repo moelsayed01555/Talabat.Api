@@ -16,10 +16,10 @@ namespace Talabat.Core.Entites
 
         public int BrandId { get; set; }  // Foriegn Key
 
-        public ProductBrand Brand { get; set; }  // Navigation Property [ ONE ]
+        public  ProductBrand Brand { get; set; }  // Navigation Property [ ONE ]
 
         public int CategoryId { get; set; }  // Foriegn Key
 
-        public ProductCategory Category { get; set; }  // Navigation Property [ ONE ]
+        public  ProductCategory Category { get; set; }  // Navigation Property [ ONE ] // virtual  enables lazy loading in Entity Framework.
     }
 }
