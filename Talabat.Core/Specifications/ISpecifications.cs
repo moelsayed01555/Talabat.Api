@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
+using Talabat.Core.Entites;
+
+namespace Talabat.Core.Specifications
+{
+    public  interface ISpecifications<T> where T : BaseEntity
+    {
+        // property signature
+        // _dbContext.Set<T>().Where(Criteria).Include(p => p.Brand).Include(p => p.Category).ToListAsync();
+        //      where(Criteria)           (Includes)
+        public Expression<Func<T,bool>> Criteria { get; set; }  // to filter data based on some conditions
+
+        public List<Expression<Func<T, object>>> Includes { get; set; }  // to include navigation properties in the query
+    }
+}

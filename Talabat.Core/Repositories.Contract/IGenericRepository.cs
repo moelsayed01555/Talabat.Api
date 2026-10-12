@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Talabat.Core.Entites;
+using Talabat.Core.Specifications;
 
 namespace Talabat.Core.Repositories.Contract
 {
@@ -12,6 +13,10 @@ namespace Talabat.Core.Repositories.Contract
         Task<T?> GetAsync(int id);  // get entity by id
 
         Task<IEnumerable<T>> GetAllAsync();  // get all entities
+
+        Task<IEnumerable<T>> GetAllSpecAsync(ISpecifications<T> spec);  // get all entities by specification
+
+        Task<T?> GetSpecAsync(ISpecifications<T> spec);  // get entity by specification
 
     }
 }

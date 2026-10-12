@@ -5,6 +5,7 @@ using Talabat.Core.Entites;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository.Data;
 using Microsoft.EntityFrameworkCore;
+using Talabat.Core.Specifications;
 
 namespace Talabat.Repository
 {
@@ -28,6 +29,8 @@ namespace Talabat.Repository
             return await _dbContext.Set<T>().ToListAsync();
         }
 
+   
+
         public async Task<T?> GetAsync(int id)
         {
             if(typeof(T) == typeof(Product))
@@ -36,6 +39,17 @@ namespace Talabat.Repository
             }
 
             return await _dbContext.Set<T>().FindAsync(id);
+        }
+
+        public async Task<IEnumerable<T>> GetAllSpecAsync(ISpecifications<T> spec)
+        {
+            return await SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec).ToListAsync();
+        }
+
+
+        public async Task<T?> GetSpecAsync(ISpecifications<T> spec)
+        {
+            return await SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec).FirstOrDefaultAsync();
         }
     }
 }
