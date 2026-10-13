@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using talabat.apis.DTOs;
 using Talabat.Core.Entites;
 using Talabat.Core.Repositories.Contract;
+using Talabat.Core.Specifications.Product_Specs;
 
 namespace talabat.apis.Controllers
 {
@@ -10,32 +14,39 @@ namespace talabat.apis.Controllers
     public class ProductsController : BaseApiController
     {
         private readonly IGenericRepository<Product> _productsRpo;
+        private readonly IMapper _mapper;
 
-        public ProductsController( IGenericRepository<Product> productsRpo)
+        public ProductsController( IGenericRepository<Product> productsRpo , IMapper mapper)
         {
             _productsRpo = productsRpo;
+            _mapper = mapper;
         }
 
         // api/GetProducts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()     // criteria (null) => all products
         {
-            var result = await _productsRpo.GetAllAsync();
+            var spec = new ProductWithBrandAndCategorySpecifications();
+            var products = await _productsRpo.GetAllSpecAsync(spec);
 
-            return Ok(result);
+            var productsDto = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+
+            return Ok(productsDto);
         }
 
 
         // api/GetProduct/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProductId(int id)
+        public async Task<ActionResult<ProductDto>> GetProductId(int id)
         {
-            var result = await _productsRpo.GetAsync(id);
+            var spec = new ProductWithBrandAndCategorySpecifications(id);
+            var product = await _productsRpo.GetSpecAsync(spec);
 
-            if(result == null)
+            if(product == null)
                 return NotFound(new ProblemDetails { Title = "Not Found", Detail = $"Product with id {id} not found" });
 
-            return Ok(result);
+            var productDto = _mapper.Map<Product, ProductDto>(product);
+            return Ok(productDto);
         }
 
 

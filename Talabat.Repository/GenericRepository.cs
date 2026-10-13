@@ -43,13 +43,18 @@ namespace Talabat.Repository
 
         public async Task<IEnumerable<T>> GetAllSpecAsync(ISpecifications<T> spec)
         {
-            return await SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec).ToListAsync();
+            return await ApplySpecification(spec).ToListAsync();
         }
 
 
         public async Task<T?> GetSpecAsync(ISpecifications<T> spec)
         {
-            return await SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec).FirstOrDefaultAsync();
+            return await ApplySpecification(spec).FirstOrDefaultAsync();
+        }
+
+        public IQueryable<T> ApplySpecification(ISpecifications<T> spec)
+        {
+            return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
         }
     }
 }

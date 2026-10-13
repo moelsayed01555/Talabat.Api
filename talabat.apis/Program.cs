@@ -6,6 +6,7 @@ using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
 using System.Text.Json.Serialization;
+using talabat.apis.Helpres;
 
 namespace Talabat.Apis
 {
@@ -39,13 +40,14 @@ namespace Talabat.Apis
             //webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>,GenericRepository<ProductCategory>>();
             #endregion
 
-            webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));  // allow DI for the repository
+            webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));  // allow DI for all entities applying Igeneric Reopsitory
 
             webApplicationBuilder.Services.AddControllers().AddJsonOptions(options =>
                    {
                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                    });
 
+            webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));  // allow DI for automapper
             #endregion
 
 
