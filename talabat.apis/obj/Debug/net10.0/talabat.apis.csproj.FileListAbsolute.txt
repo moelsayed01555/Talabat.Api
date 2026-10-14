@@ -381,3 +381,6 @@ D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\talabat.apis.genruntimeconfi
 D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\ref\talabat.apis.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Castle.Core.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Proxies.dll
+D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\AutoMapper.dll
+D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\talabat.apis.staticwebassets.runtime.json

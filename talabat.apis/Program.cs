@@ -85,6 +85,8 @@ namespace Talabat.Apis
 
             app.UseAuthorization();
 
+            app.UseStaticFiles();  // to allow the application to serve static files (images, css, js, etc.) from the wwwroot folder
+
 
             app.MapControllers();  // is a middelware for routing
             #endregion
