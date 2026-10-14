@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using talabat.apis.DTOs;
+using talabat.apis.Errors;
 using Talabat.Core.Entites;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Specifications.Product_Specs;
@@ -42,9 +43,11 @@ namespace talabat.apis.Controllers
             var spec = new ProductWithBrandAndCategorySpecifications(id);
             var product = await _productsRpo.GetSpecAsync(spec);
 
-            if(product == null)
-                return NotFound(new ProblemDetails { Title = "Not Found", Detail = $"Product with id {id} not found" });
-
+            if (product == null)
+            {
+                // return NotFound(new ProblemDetails { Title = "Not Found", Detail = $"Product with id {id} not found" });
+                return NotFound(new ApiErrorResponse(404));  // instead of paaing anonomous object like above line
+            }
             var productDto = _mapper.Map<Product, ProductDto>(product);
             return Ok(productDto);
         }
