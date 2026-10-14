@@ -7,6 +7,8 @@ using Talabat.Repository;
 using Talabat.Repository.Data;
 using System.Text.Json.Serialization;
 using talabat.apis.Helpres;
+using Microsoft.AspNetCore.Mvc;
+using talabat.apis.Errors;
 
 namespace Talabat.Apis
 {
@@ -48,6 +50,24 @@ namespace Talabat.Apis
                    });
 
             webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));  // allow DI for automapper
+
+
+            // Configure the API behavior for model validation errors
+            webApplicationBuilder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .SelectMany(x => x.Value.Errors)
+                        .Select(x => x.ErrorMessage).ToArray();
+                    var errorResponse = new ApiValidationErrorResponse()
+                    {
+                        Errors = errors
+                    };
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
             #endregion
 
 
