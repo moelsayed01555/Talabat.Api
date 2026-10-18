@@ -15,11 +15,15 @@ namespace talabat.apis.Controllers
     public class ProductsController : BaseApiController
     {
         private readonly IGenericRepository<Product> _productsRpo;
+        private readonly IGenericRepository<ProductBrand> _brandsRpo;
+        private readonly IGenericRepository<ProductCategory> _categoriesRpo;
         private readonly IMapper _mapper;
 
-        public ProductsController( IGenericRepository<Product> productsRpo , IMapper mapper)
+        public ProductsController( IGenericRepository<Product> productsRpo ,IGenericRepository<ProductBrand> brandsRpo ,IGenericRepository<ProductCategory> categoriesRpo ,IMapper mapper)
         {
             _productsRpo = productsRpo;
+            _brandsRpo = brandsRpo;
+            _categoriesRpo = categoriesRpo;
             _mapper = mapper;
         }
 
@@ -37,6 +41,8 @@ namespace talabat.apis.Controllers
 
 
         // api/GetProduct/id
+        [ProducesResponseType(typeof(ProductDto) , statusCode: 200)]
+        [ProducesResponseType(typeof(ApiErrorResponse), statusCode: 404)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProductId(int id)
         {
@@ -53,6 +59,23 @@ namespace talabat.apis.Controllers
         }
 
 
+        // api/Products/brands
+        [HttpGet("brands")]
+        public async Task<ActionResult<IEnumerable<ProductBrand>>> GetBrands()
+        {
+            var brands = await _brandsRpo.GetAllAsync();
+
+            return Ok(brands);
+        }
+
+        // api/Products/categories
+        [HttpGet("categories")]
+        public async Task<ActionResult<IEnumerable<ProductCategory>>> GetCategories()
+        {
+            var categories = await _categoriesRpo.GetAllAsync();
+
+            return Ok(categories);
+        }
 
     }
 }
