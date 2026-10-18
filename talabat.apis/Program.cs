@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using talabat.apis.Helpres;
 using Microsoft.AspNetCore.Mvc;
 using talabat.apis.Errors;
+using talabat.apis.Middelwares;
 
 namespace Talabat.Apis
 {
@@ -93,6 +94,8 @@ namespace Talabat.Apis
             #endregion
 
             #region Configure kestrel Middelwares
+            app.UseMiddleware<ExceptionMiddelware>();  // to handle the exceptions in a global way
+
             // Configure the HTTP request pipeline.
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
