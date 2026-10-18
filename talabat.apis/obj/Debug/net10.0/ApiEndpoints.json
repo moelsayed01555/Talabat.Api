@@ -46,6 +46,22 @@
     ]
   },
   {
+    "ContainingType": "talabat.apis.Controllers.ErrorsController",
+    "Method": "Error",
+    "RelativePath": "errors/{code}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Talabat.Apis.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

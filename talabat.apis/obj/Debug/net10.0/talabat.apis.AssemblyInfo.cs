@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("talabat.apis")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+06e14e648b8d4578a59f11d4d3a9b658bafc70a4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+32bfb81376b6adc5c99dd98d815e27a525a68db3")]
 [assembly: System.Reflection.AssemblyProductAttribute("talabat.apis")]
 [assembly: System.Reflection.AssemblyTitleAttribute("talabat.apis")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

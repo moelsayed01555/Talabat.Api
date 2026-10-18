@@ -104,6 +104,9 @@ namespace Talabat.Apis
                 app.UseSwaggerUI();
                // app.MapOpenApi();
             }
+
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");     // to handle the status code errors in a global way
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

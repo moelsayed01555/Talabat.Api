@@ -5,6 +5,29 @@
     "version": "1.0"
   },
   "paths": {
+    "/errors/{code}": {
+      "get": {
+        "tags": [
+          "Errors"
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Products": {
       "get": {
         "tags": [
@@ -193,6 +216,9 @@
     }
   },
   "tags": [
+    {
+      "name": "Errors"
+    },
     {
       "name": "Products"
     },
