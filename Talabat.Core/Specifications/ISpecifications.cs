@@ -14,5 +14,10 @@ namespace Talabat.Core.Specifications
         public Expression<Func<T,bool>> Criteria { get; set; }  // to filter data based on some conditions
 
         public List<Expression<Func<T, object>>> Includes { get; set; }  // to include navigation properties in the query
+
+        // for sorting data
+        public Expression<Func<T, object>> OrderBy { get; set; }  // to sort data in ascending order
+
+        public Expression<Func<T, object>> OrderByDesc { get; set; }  // to sort data in descending order
     }
 }

@@ -10,6 +10,8 @@ namespace Talabat.Core.Specifications
     {
         public Expression<Func<T, bool>> Criteria { get; set; }
         public List<Expression<Func<T, object>>> Includes { get; set; } = new List<Expression<Func<T, object>>>();
+        public Expression<Func<T, object>> OrderBy { get; set; }
+        public Expression<Func<T, object>> OrderByDesc { get; set; }
 
         // when criteria is null
         public BaseSpecifications()
@@ -21,6 +23,19 @@ namespace Talabat.Core.Specifications
         {
             // for specific criteria
             Criteria = criteriaExpression;
+        }
+
+        // i will make two methods : one for setting the OrderBy and another for setting the OrderByDescending
+        // just setter
+
+        protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
+        {
+            OrderBy = orderByExpression;
+        }
+
+        protected void AddOrderByDescending(Expression<Func<T, object>> orderByDescExpression)
+        {
+            OrderByDesc = orderByDescExpression;
         }
     }
 }

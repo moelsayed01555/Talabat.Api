@@ -10,10 +10,30 @@ namespace Talabat.Core.Specifications.Product_Specs
     {
 
         // Criteria ( NULL) , Includes ( Brand , Category )
-        public ProductWithBrandAndCategorySpecifications() : base()  // base is BaseSpecifications Constructor with no parameters
+        public ProductWithBrandAndCategorySpecifications( string sort) : base()  // base is BaseSpecifications Constructor with no parameters
         {
             Includes.Add(P => P.Brand);       // include Brand navigation property
             Includes.Add(P => P.Category);    // include Category navigation property
+
+            if(!string.IsNullOrEmpty(sort))
+            {
+                switch (sort.ToLower())
+                {
+                    case "priceasc":
+                        AddOrderBy(P => P.Price);  // sort by price ascending
+                        break;
+                    case "pricedesc":
+                        AddOrderByDescending(P => P.Price);  // sort by price descending
+                        break;
+                    default:
+                        AddOrderBy(P => P.Name);  // sort by name ascending
+                        break;
+                }
+            }
+            else
+            {
+                AddOrderBy(P => P.Name);  // sort by name ascending
+            }
         }
 
 
@@ -24,6 +44,8 @@ namespace Talabat.Core.Specifications.Product_Specs
             Includes.Add(P => P.Brand);       // include Brand navigation property
             Includes.Add(P => P.Category);    // include Category navigation property
         }
+
+
 
     }
 }
