@@ -10,7 +10,14 @@ namespace Talabat.Core.Specifications.Product_Specs
     {
 
         // Criteria ( NULL) , Includes ( Brand , Category )
-        public ProductWithBrandAndCategorySpecifications( string sort) : base()  // base is BaseSpecifications Constructor with no parameters
+        // base is BaseSpecifications Constructor with no parameters
+        public ProductWithBrandAndCategorySpecifications( string? sort , int? brandId , int? categoryId) : base(P =>
+        
+                               (!brandId.HasValue    || P.BrandId == brandId.Value ) &&             // for filter by brandId --> https://localhost:7245/api/Products?brandId=1 or null 
+                               (!categoryId.HasValue || P.CategoryId == categoryId.Value)           // for filter by categoryId --> https://localhost:7245/api/Products?categoryId=1 or null
+
+
+        )  
         {
             Includes.Add(P => P.Brand);       // include Brand navigation property
             Includes.Add(P => P.Category);    // include Category navigation property

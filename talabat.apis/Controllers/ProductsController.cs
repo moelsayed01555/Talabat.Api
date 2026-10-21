@@ -29,9 +29,9 @@ namespace talabat.apis.Controllers
 
         // api/GetProducts
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts(string sort)     // criteria (null) => all products
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts(string? sort , int? brandId , int? categoryId)     // criteria (null) => all products
         {
-            var spec = new ProductWithBrandAndCategorySpecifications(sort);
+            var spec = new ProductWithBrandAndCategorySpecifications(sort , brandId , categoryId);
             var products = await _productsRpo.GetAllSpecAsync(spec);
 
             var productsDto = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
