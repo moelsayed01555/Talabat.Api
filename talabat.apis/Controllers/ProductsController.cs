@@ -39,7 +39,11 @@ namespace talabat.apis.Controllers
 
             var data = productsDto;     // data for pagination property class
 
-            return Ok(new Pagination<ProductDto>(specParams.PageIndex , specParams.PageSize , data));
+            var countSpec = new ProductWithFilterationForCountSpecifications(specParams);
+
+            var count = await _productsRpo.GetCountAsync(countSpec);   // for count pagination
+
+            return Ok(new Pagination<ProductDto>(specParams.PageIndex , specParams.PageSize , count , data));
         }
 
 

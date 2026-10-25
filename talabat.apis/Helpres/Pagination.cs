@@ -16,10 +16,11 @@ namespace talabat.apis.Helpres
 
         public IReadOnlyList<T> Data { get; set; }
 
-        public Pagination(int pageIndex, int pageSize, IReadOnlyList<T> data)
+        public Pagination(int pageIndex, int pageSize, int count ,IReadOnlyList<T> data)
         {
             PageIndex = pageIndex;
             PageSize = pageSize;
+            Count = count;
             Data = data;
         }
     }
