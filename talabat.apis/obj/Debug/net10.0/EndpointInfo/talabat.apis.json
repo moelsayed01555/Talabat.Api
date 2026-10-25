@@ -66,6 +66,13 @@
             }
           },
           {
+            "name": "Search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "PageSize",
             "in": "query",
             "schema": {

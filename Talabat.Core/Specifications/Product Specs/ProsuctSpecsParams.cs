@@ -11,7 +11,9 @@ namespace Talabat.Core.Specifications.Product_Specs
         public int? BrandID { get; set; }
         public int? CategoryID { get; set; }
         public int PageIndex { get; set; } = 1;
-        
+
+        public string? Search { get; set; }
+
 
         // هنا استخدمنا Full Property بدل Auto-Property علشان نتحكم في القيمة، بحيث إن المستخدم ما يقدرش يطلب أكتر من 10 منتجات في الصفحة.
         private const int MaxPageSize = 10;

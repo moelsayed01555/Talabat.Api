@@ -15,6 +15,7 @@ namespace Talabat.Core.Specifications.Product_Specs
         // this class will have properites for sorting , filtering and pagination
         public ProductWithBrandAndCategorySpecifications( ProsuctSpecsParams specParams) : base(P =>
         
+                               (string.IsNullOrEmpty(specParams.Search) || P.Name.ToLower().Contains(specParams.Search.ToLower())) &&
                                (!specParams.BrandID.HasValue    || P.BrandId == specParams.BrandID.Value ) &&             // for filter by brandId --> https://localhost:7245/api/Products?brandId=1 or null 
                                (!specParams.CategoryID.HasValue || P.CategoryId == specParams.CategoryID.Value)           // for filter by categoryId --> https://localhost:7245/api/Products?categoryId=1 or null
 
