@@ -11,10 +11,12 @@ namespace Talabat.Core.Specifications.Product_Specs
 
         // Criteria ( NULL) , Includes ( Brand , Category )
         // base is BaseSpecifications Constructor with no parameters
-        public ProductWithBrandAndCategorySpecifications( string? sort , int? brandId , int? categoryId) : base(P =>
+        //   public ProductWithBrandAndCategorySpecifications( string? sort , int? brandId , int? categoryId) : base() بدل ده هنعمل كلاس فيه كل البرامترز دي ونبعته علطلول للكونيتراكتور
+        // this class will have properites for sorting , filtering and pagination
+        public ProductWithBrandAndCategorySpecifications( ProsuctSpecsParams specParams) : base(P =>
         
-                               (!brandId.HasValue    || P.BrandId == brandId.Value ) &&             // for filter by brandId --> https://localhost:7245/api/Products?brandId=1 or null 
-                               (!categoryId.HasValue || P.CategoryId == categoryId.Value)           // for filter by categoryId --> https://localhost:7245/api/Products?categoryId=1 or null
+                               (!specParams.BrandID.HasValue    || P.BrandId == specParams.BrandID.Value ) &&             // for filter by brandId --> https://localhost:7245/api/Products?brandId=1 or null 
+                               (!specParams.CategoryID.HasValue || P.CategoryId == specParams.CategoryID.Value)           // for filter by categoryId --> https://localhost:7245/api/Products?categoryId=1 or null
 
 
         )  
@@ -22,9 +24,11 @@ namespace Talabat.Core.Specifications.Product_Specs
             Includes.Add(P => P.Brand);       // include Brand navigation property
             Includes.Add(P => P.Category);    // include Category navigation property
 
-            if(!string.IsNullOrEmpty(sort))
+            // set sorting
+
+            if(!string.IsNullOrEmpty(specParams.Sort))
             {
-                switch (sort.ToLower())
+                switch (specParams.Sort.ToLower())
                 {
                     case "priceasc":
                         AddOrderBy(P => P.Price);  // sort by price ascending
@@ -41,6 +45,11 @@ namespace Talabat.Core.Specifications.Product_Specs
             {
                 AddOrderBy(P => P.Name);  // sort by name ascending
             }
+
+            // apply pagination
+            // tatalproducts=18  , pagesize=5 , pageindex =3
+            ApplyPagination((specParams.PageIndex - 1)*specParams.PageSize , specParams.PageSize);
+
         }
 
 

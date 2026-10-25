@@ -8,24 +8,34 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "sort",
+        "Name": "Sort",
         "Type": "System.String",
         "IsRequired": false
       },
       {
-        "Name": "brandId",
+        "Name": "BrandID",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
-        "Name": "categoryId",
+        "Name": "CategoryID",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageIndex",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
         "IsRequired": false
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IReadOnlyList\u00601[[talabat.apis.DTOs.ProductDto, talabat.apis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "talabat.apis.Helpres.Pagination\u00601[[talabat.apis.DTOs.ProductDto, talabat.apis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

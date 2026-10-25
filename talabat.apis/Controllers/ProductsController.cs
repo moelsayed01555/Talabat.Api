@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using talabat.apis.DTOs;
 using talabat.apis.Errors;
+using talabat.apis.Helpres;
 using Talabat.Core.Entites;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Specifications.Product_Specs;
@@ -27,16 +28,18 @@ namespace talabat.apis.Controllers
             _mapper = mapper;
         }
 
-        // api/GetProducts
+        // api/GetProducts  // [FromQuery] means read query from url header
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts(string? sort , int? brandId , int? categoryId)     // criteria (null) => all products
+        public async Task<ActionResult<Pagination<ProductDto>>> GetProducts([FromQuery] ProsuctSpecsParams specParams)     // criteria (null) => all products
         {
-            var spec = new ProductWithBrandAndCategorySpecifications(sort , brandId , categoryId);
+            var spec = new ProductWithBrandAndCategorySpecifications(specParams);
             var products = await _productsRpo.GetAllSpecAsync(spec);
 
             var productsDto = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
 
-            return Ok(productsDto);
+            var data = productsDto;     // data for pagination property class
+
+            return Ok(new Pagination<ProductDto>(specParams.PageIndex , specParams.PageSize , data));
         }
 
 

@@ -19,5 +19,12 @@ namespace Talabat.Core.Specifications
         public Expression<Func<T, object>> OrderBy { get; set; }  // to sort data in ascending order
 
         public Expression<Func<T, object>> OrderByDesc { get; set; }  // to sort data in descending order
+
+        // specification for pagination
+        public int Take { get; set; }
+
+        public int Skip { get; set; }
+
+        public bool IsPaginationEnabled { get; set; }
     }
 }

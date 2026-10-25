@@ -10,6 +10,7 @@ namespace Talabat.Repository
     public static class SpecificationsEvaluator<TEntity> where TEntity : BaseEntity
     {
         // Method ( DbSet<T> , ISpecifications<T> ) => IQueryable<T>
+        // pagination is after where(filter) and sort(sorting) 
 
         public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery , ISpecifications<TEntity> spec)
         {
@@ -28,6 +29,12 @@ namespace Talabat.Repository
            else if(spec.OrderByDesc != null)
             {
                 query = query.OrderByDescending(spec.OrderByDesc);
+            }
+
+            //apply pagination
+            if(spec.IsPaginationEnabled)
+            {
+                query = query.Skip(spec.Skip).Take(spec.Take);
             }
 
             // query = _dbContext.Products.OrderBy( P => P.Name ).OrderByDesc( P=> P,Price)
