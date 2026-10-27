@@ -1,15 +1,16 @@
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
+using talabat.apis.Errors;
+using talabat.apis.Helpres;
+using talabat.apis.Middelwares;
 using Talabat.Core.Entites;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
-using System.Text.Json.Serialization;
-using talabat.apis.Helpres;
-using Microsoft.AspNetCore.Mvc;
-using talabat.apis.Errors;
-using talabat.apis.Middelwares;
 
 namespace Talabat.Apis
 {
@@ -36,6 +37,14 @@ namespace Talabat.Apis
                 options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // allow DI for the redis context
+            
+
+            webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>( (ServiceProvider) =>
+            {
+                var redisConnection = webApplicationBuilder.Configuration.GetConnectionString("Redis");
+                return ConnectionMultiplexer.Connect(redisConnection);
+                });
             // allow DI for the repository
             #region بدل كل ده هننفز اللي تحتها
             //webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>,GenericRepository<Product>>();
