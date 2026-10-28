@@ -54,6 +54,8 @@ namespace Talabat.Apis
 
             webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));  // allow DI for all entities applying Igeneric Reopsitory
 
+            webApplicationBuilder.Services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));     // allow DI for Basket Repository
+
             webApplicationBuilder.Services.AddControllers().AddJsonOptions(options =>
                    {
                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;

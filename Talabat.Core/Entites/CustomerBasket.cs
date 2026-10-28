@@ -8,8 +8,16 @@ namespace Talabat.Core.Entites
 
     public class CustomerBasket
     {
+    
+
         public string Id { get; set; }   // string because frontend will send it from grid
 
         public List<BasketItem> Items { get; set; }
+
+        public CustomerBasket(string id)
+        {
+            Id = id;
+            Items = new List<BasketItem>();
+        }
     }
 }
