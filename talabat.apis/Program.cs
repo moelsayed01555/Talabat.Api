@@ -11,6 +11,7 @@ using Talabat.Core.Entites;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
+using Talabat.Repository.Identity;
 
 namespace Talabat.Apis
 {
@@ -37,8 +38,15 @@ namespace Talabat.Apis
                 options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // allow DI for Security database 
+            webApplicationBuilder.Services.AddDbContext<AppIdentityDbContext>(options =>       
+            {                                                                         
+               
+                options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("IdentityConnection"));
+            });
+
             // allow DI for the redis context
-            
+
 
             webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>( (ServiceProvider) =>
             {
