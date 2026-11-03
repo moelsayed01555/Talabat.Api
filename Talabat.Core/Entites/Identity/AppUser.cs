@@ -7,7 +7,7 @@ using System.Text;
 namespace Talabat.Core.Entites.Identity
 {
     // first step in applying security
-    public class AppUser : IdentityUser                             // by default Id internallu is string
+    public class AppUser : IdentityUser                             // by default Id internally is string
     {
         public string DisplayName { get; set; }        // Name of user
          

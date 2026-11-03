@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -8,6 +9,7 @@ using talabat.apis.Errors;
 using talabat.apis.Helpres;
 using talabat.apis.Middelwares;
 using Talabat.Core.Entites;
+using Talabat.Core.Entites.Identity;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
@@ -90,6 +92,16 @@ namespace Talabat.Apis
                     return new BadRequestObjectResult(errorResponse);
                 };
             });
+
+            // Add Identity services to the DI container
+            webApplicationBuilder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                //options.Password.RequireDigit = true;
+                //options.Password.RequireLowercase = true;
+                //options.Password.RequireUppercase = true;
+                //options.Password.RequireNonAlphanumeric = false;
+                //options.Password.RequiredLength = 6;
+            }).AddEntityFrameworkStores<AppIdentityDbContext>(); // use the AppIdentityDbContext to store identity data
             #endregion
 
 
@@ -109,6 +121,9 @@ namespace Talabat.Apis
                 await StoreContextSeed.SeedAsync(_dbContext); // Seed the database with initial data
 
                 await _identityDbContext.Database.MigrateAsync();  // Perform automatic migration( update database)
+
+                var userManager = services.GetRequiredService<UserManager<AppUser>>(); // ask clr to create object from userManager to create user in the database
+                await AppIdentityDbContextSeed.SeedUsersAsync(userManager); // Seed the database with initial data
             }
             catch (Exception ex)
             {
