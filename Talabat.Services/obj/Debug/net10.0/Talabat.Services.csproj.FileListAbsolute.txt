@@ -21,4 +21,5 @@ D:\.Net Moo\projects\Talabat.Services\obj\Debug\net10.0\Talabat.Services.dll
 D:\.Net Moo\projects\Talabat.Services\obj\Debug\net10.0\refint\Talabat.Services.dll
 D:\.Net Moo\projects\Talabat.Services\obj\Debug\net10.0\Talabat.Services.pdb
 D:\.Net Moo\projects\Talabat.Services\obj\Debug\net10.0\ref\Talabat.Services.dll
+D:\.Net Moo\projects\Talabat.Services\obj\Debug\net10.0\Talabat.Services.csproj.AssemblyReference.cache
 D:\.Net Moo\projects\Talabat.Services\obj\Debug\net10.0\Talabat..D0FE60AD.Up2Date

@@ -25,5 +25,4 @@ D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\refint\Talabat.Core.dll
 D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.pdb
 D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.genruntimeconfig.cache
 D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\ref\Talabat.Core.dll
-D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat..EF9EA6A7.Up2Date
 D:\.Net Moo\projects\Talabat.Core\obj\Debug\net10.0\Talabat.Core.csproj.AssemblyReference.cache

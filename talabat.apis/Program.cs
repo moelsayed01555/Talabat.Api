@@ -39,20 +39,20 @@ namespace Talabat.Apis
             });
 
             // allow DI for Security database 
-            webApplicationBuilder.Services.AddDbContext<AppIdentityDbContext>(options =>       
-            {                                                                         
-               
+            webApplicationBuilder.Services.AddDbContext<AppIdentityDbContext>(options =>
+            {
+
                 options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("IdentityConnection"));
             });
 
             // allow DI for the redis context
 
 
-            webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>( (ServiceProvider) =>
+            webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((ServiceProvider) =>
             {
                 var redisConnection = webApplicationBuilder.Configuration.GetConnectionString("Redis");
                 return ConnectionMultiplexer.Connect(redisConnection);
-                });
+            });
             // allow DI for the repository
             #region بدل كل ده هننفز اللي تحتها
             //webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>,GenericRepository<Product>>();
@@ -62,15 +62,17 @@ namespace Talabat.Apis
 
             webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));  // allow DI for all entities applying Igeneric Reopsitory
 
-            webApplicationBuilder.Services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));     // allow DI for Basket Repository
+            webApplicationBuilder.Services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));     // allow DI for Basket Repository
 
             webApplicationBuilder.Services.AddControllers().AddJsonOptions(options =>
-                   {
-                       options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-                   });
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
 
-            webApplicationBuilder.Services.AddAutoMapper(typeof(MappingProfiles));  // allow DI for automapper
-
+            webApplicationBuilder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.LicenseKey = "YOUR_LICENSE_KEY";
+            }, typeof(MappingProfiles).Assembly);
 
             // Configure the API behavior for model validation errors
             webApplicationBuilder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -98,12 +100,15 @@ namespace Talabat.Apis
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;                          // ask for object from scoped services( di container) 
             var _dbContext = services.GetRequiredService<StoreContext>();  // ask clr to create object from dbContext
-             
+            var _identityDbContext = services.GetRequiredService<AppIdentityDbContext>();  // ask clr to create object from dbContext
+
             var loggerFactory = services.GetRequiredService<ILoggerFactory>(); // ask clr to create object from loggerFactory to show error in obvious way
             try
             {
                 await _dbContext.Database.MigrateAsync();  // Perform automatic migration( update database)
                 await StoreContextSeed.SeedAsync(_dbContext); // Seed the database with initial data
+
+                await _identityDbContext.Database.MigrateAsync();  // Perform automatic migration( update database)
             }
             catch (Exception ex)
             {
@@ -121,7 +126,7 @@ namespace Talabat.Apis
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-               // app.MapOpenApi();
+                // app.MapOpenApi();
             }
 
             app.UseStatusCodePagesWithReExecute("/errors/{0}");     // to handle the status code errors in a global way

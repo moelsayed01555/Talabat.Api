@@ -11,15 +11,23 @@ namespace Talabat.Repository.Identity
     // DbContext ( Database for redis ) 
     public class AppIdentityDbContext : IdentityDbContext<AppUser>
     {
-        public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options) 
+        public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
             : base(options)
         {
-            
-        }
 
-    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //    {
-    //        base.OnConfiguring(optionsBuilder);
-    //    }
+        }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<Address>().ToTable("Addresses");   // to change the name of the table in the database from Address to Addresses
+
+
+        }
     }
 }
+
+
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//    {
+//        base.OnConfiguring(optionsBuilder);
+//    }

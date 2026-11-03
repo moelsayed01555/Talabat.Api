@@ -372,7 +372,6 @@ D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\staticwebassets.build.json.c
 D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\staticwebassets.development.json
 D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\swae.build.ex.cache
-D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\talabat..57AD0036.Up2Date
 D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\talabat.apis.dll
 D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\refint\talabat.apis.dll
@@ -382,8 +381,9 @@ D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\ref\talabat.apis.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Castle.Core.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Proxies.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\AutoMapper.dll
-D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\talabat.apis.staticwebassets.runtime.json
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\RESPite.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\StackExchange.Redis.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\System.IO.Hashing.dll
+D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
