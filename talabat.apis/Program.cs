@@ -94,7 +94,7 @@ namespace Talabat.Apis
             });
 
             // Add Identity services to the DI container
-            webApplicationBuilder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+            webApplicationBuilder.Services.AddIdentity<AppUser, IdentityRole>(options =>        // configure the identity options( appUser ( Customized IdentityUser) , IdentityRole )
             {
                 //options.Password.RequireDigit = true;
                 //options.Password.RequireLowercase = true;
