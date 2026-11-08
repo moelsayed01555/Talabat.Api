@@ -10,8 +10,8 @@ namespace Talabat.Core.Entites.Order_Aggregate
         [EnumMember(Value = "Pending")]         // EnumMember make the value of "Pending" store in db "pending" instead of 0  
         Pending,
 
-        [EnumMember(Value = "Payment Successed")]
-        PaymentSuccessed,
+        [EnumMember(Value = "Payment Received")]
+        PaymentReceived,
 
         [EnumMember(Value = "Payment Failed")]
         PaymentFailed

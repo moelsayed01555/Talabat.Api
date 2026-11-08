@@ -29,6 +29,8 @@ namespace Talabat.Core.Entites.Order_Aggregate
 
         public Address ShippingAddress { get; set; }    // In DB the table will have the columns of the address class as a part of the order table
 
+
+        public int? DeliveryMethodId { get; set; }    // Foreign key to the delivery method table [1:1]
         public DeliveryMethod DeliveryMethod { get; set; }     // Navigation property [1:1]
 
         public decimal Subtotal { get; set; }            // The total price of the order items without the delivery cost
