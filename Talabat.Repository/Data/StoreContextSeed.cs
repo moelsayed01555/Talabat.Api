@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Talabat.Core.Entites;
+using Talabat.Core.Entites.Order_Aggregate;
 
 namespace Talabat.Repository.Data
 {
@@ -12,6 +13,8 @@ namespace Talabat.Repository.Data
     {
         public static async Task SeedAsync( StoreContext _dbContext)
         {
+            // Seeding to ProductBrands
+
             if ( _dbContext.ProductBrands.Count() == 0) // check if the ProductBrands database is empty
             {
                 var brandsData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/brands.json"); // read the data from json file
@@ -29,11 +32,7 @@ namespace Talabat.Repository.Data
 
 
 
-
-
-
-
-
+            // Seeding to ProductCategories
 
             if (_dbContext.ProductCategories.Count() == 0) // check if the ProductCategories database is empty
             {
@@ -50,7 +49,11 @@ namespace Talabat.Repository.Data
                 }
             }
 
-            if(_dbContext.Products.Count() == 0) // check if the Products database is empty
+
+
+            // Seeding to Products
+
+            if (_dbContext.Products.Count() == 0) // check if the Products database is empty
             {
                 var productsData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/products.json");
                 var products = JsonSerializer.Deserialize<List<Product>>(productsData);
@@ -59,6 +62,22 @@ namespace Talabat.Repository.Data
                     foreach (var item in products)
                     {
                         _dbContext.Set<Product>().Add(item);
+                    }
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+
+
+            // Seeding to DeliveryMethods
+            if(_dbContext.DeliveryMethods.Count() == 0) // check if the DeliveryMethods database is empty
+            {
+                var deliveryMethodsData = File.ReadAllText("../Talabat.Repository/Data/DataSeed/delivery.json");
+                var deliveryMethods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryMethodsData);
+                if (deliveryMethods is not null && deliveryMethods.Count > 0)
+                {
+                    foreach (var item in deliveryMethods)
+                    {
+                        _dbContext.Set<DeliveryMethod>().Add(item);
                     }
                     await _dbContext.SaveChangesAsync();
                 }
