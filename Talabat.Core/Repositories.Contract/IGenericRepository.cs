@@ -21,5 +21,13 @@ namespace Talabat.Core.Repositories.Contract
         // add signature for adding count for pagination
         Task<int> GetCountAsync(ISpecifications<T> spec);  // <int> because count return int
 
+        Task<T> AddAsync(T entity);  // add entity
+
+        // add signature for updating entity
+        void UpdateAsync(T entity);  // update entity
+
+        // add signature for deleting entity
+        void DeleteAsync(T entity);  // delete entity
+
     }
 }

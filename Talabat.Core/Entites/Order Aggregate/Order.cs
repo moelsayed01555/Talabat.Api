@@ -10,7 +10,7 @@ namespace Talabat.Core.Entites.Order_Aggregate
         {
             
         }
-        public Order(string buyerEmail, Address shippingAddress, DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subtotal, string paymentIntentId)
+        public Order(string buyerEmail, Address shippingAddress, DeliveryMethod deliveryMethod, ICollection<OrderItem> items, decimal subtotal)
         { // This constructor is used to create an order object when the user checks out
             BuyerEmail = buyerEmail;
             ShippingAddress = shippingAddress;
@@ -37,7 +37,7 @@ namespace Talabat.Core.Entites.Order_Aggregate
 
         public decimal GetTotal() => Subtotal + DeliveryMethod.Cost;
 
-        public string PaymentIntentId { get; set; }  = string.Empty;  // This is the id of the payment intent that we will create in stripe
+        public string? PaymentIntentId { get; set; }  = string.Empty;  // This is the id of the payment intent that we will create in stripe
 
     }
 }
