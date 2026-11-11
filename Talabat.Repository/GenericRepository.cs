@@ -62,8 +62,8 @@ namespace Talabat.Repository
             return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
         }
 
-        public Task<T> AddAsync(T entity)
-                 => _dbContext.Set<T>().AddAsync(entity);
+        public async Task AddAsync(T entity)
+                 => await _dbContext.Set<T>().AddAsync(entity);
 
         public void UpdateAsync(T entity)
                 => _dbContext.Set<T>().Update(entity);

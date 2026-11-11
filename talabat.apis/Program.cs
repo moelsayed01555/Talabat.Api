@@ -1,14 +1,11 @@
-
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
-using System.Text.Json.Serialization;
-using System.Text.Json.Serialization;
 using talabat.apis.Errors;
 using talabat.apis.Helpres;
 using talabat.apis.Middelwares;
-using Talabat.Core.Entites;
 using Talabat.Core.Entites.Identity;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Repository;
@@ -21,141 +18,135 @@ namespace Talabat.Apis
     {
         public static async Task Main(string[] args)
         {
-            var webApplicationBuilder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);
 
-            #region // Configure Services (Add services to the container).
+            #region Configure Services (add services to the DI container)
 
-            webApplicationBuilder.Services.AddControllers();
-            //Register the required web apis services into the DI Container
+            // ---------- Controllers & JSON ----------
+            builder.Services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
 
-            //allow DI for Swagger
-            webApplicationBuilder.Services.AddEndpointsApiExplorer();
-            webApplicationBuilder.Services.AddSwaggerGen();
-            // webApplicationBuilder.Services.AddOpenApi();
+            // ---------- Swagger ----------
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
-            // allow DI for the database context
-            webApplicationBuilder.Services.AddDbContext<StoreContext>(options =>       // use options because of parameterized constructor in StoreContext class
-            {                                                                          //Connection string (name : DefaultConnection) is stored in appsettings.json file
-                //options.UseLazyLoadingProxies();  // enable lazy loading for navigation properties in the entities
-                options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
+            // ---------- Databases ----------
+            // Store database (connection string: DefaultConnection in appsettings.json)
+            builder.Services.AddDbContext<StoreContext>(options =>
+            {
+                // options.UseLazyLoadingProxies();
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            // allow DI for Security database 
-            webApplicationBuilder.Services.AddDbContext<AppIdentityDbContext>(options =>
+            // Identity (security) database
+            builder.Services.AddDbContext<AppIdentityDbContext>(options =>
             {
-
-                options.UseSqlServer(webApplicationBuilder.Configuration.GetConnectionString("IdentityConnection"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection"));
             });
 
-            // allow DI for the redis context
-
-
-            webApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((ServiceProvider) =>
+            // ---------- Redis ----------
+            builder.Services.AddSingleton<IConnectionMultiplexer>(_ =>
             {
-                var redisConnection = webApplicationBuilder.Configuration.GetConnectionString("Redis");
+                var redisConnection = builder.Configuration.GetConnectionString("Redis");
                 return ConnectionMultiplexer.Connect(redisConnection);
             });
-            // allow DI for the repository
-            #region بدل كل ده هننفز اللي تحتها
-            //webApplicationBuilder.Services.AddScoped<IGenericRepository<Product>,GenericRepository<Product>>();
-            //webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductBrand>,GenericRepository<ProductBrand>>();
-            //webApplicationBuilder.Services.AddScoped<IGenericRepository<ProductCategory>,GenericRepository<ProductCategory>>();
-            #endregion
 
-            webApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));  // allow DI for all entities applying Igeneric Reopsitory
+            // ---------- Repositories ----------
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
+            builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
-            webApplicationBuilder.Services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));     // allow DI for Basket Repository
-
-            webApplicationBuilder.Services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            });
-
-            webApplicationBuilder.Services.AddAutoMapper(cfg =>
+            // ---------- AutoMapper ----------
+            builder.Services.AddAutoMapper(cfg =>
             {
                 cfg.LicenseKey = "YOUR_LICENSE_KEY";
             }, typeof(MappingProfiles).Assembly);
 
-            // Configure the API behavior for model validation errors
-            webApplicationBuilder.Services.Configure<ApiBehaviorOptions>(options =>
+            // ---------- API behavior (custom model validation error response) ----------
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actionContext =>
                 {
                     var errors = actionContext.ModelState
                         .Where(e => e.Value.Errors.Count > 0)
-                        .SelectMany(x => x.Value.Errors)
-                        .Select(x => x.ErrorMessage).ToArray();
-                    var errorResponse = new ApiValidationErrorResponse()
+                        .SelectMany(e => e.Value.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToArray();
+
+                    return new BadRequestObjectResult(new ApiValidationErrorResponse
                     {
                         Errors = errors
-                    };
-                    return new BadRequestObjectResult(errorResponse);
+                    });
                 };
             });
 
-            // Add Identity services to the DI container
-            webApplicationBuilder.Services.AddIdentity<AppUser, IdentityRole>(options =>        // configure the identity options( appUser ( Customized IdentityUser) , IdentityRole )
-            {
-                //options.Password.RequireDigit = true;
-                //options.Password.RequireLowercase = true;
-                //options.Password.RequireUppercase = true;
-                //options.Password.RequireNonAlphanumeric = false;
-                //options.Password.RequiredLength = 6;
-            }).AddEntityFrameworkStores<AppIdentityDbContext>(); // use the AppIdentityDbContext to store identity data
+            // ---------- Identity ----------
+            builder.Services
+                .AddIdentity<AppUser, IdentityRole>(options =>
+                {
+                    //options.Password.RequireDigit = true;
+                    //options.Password.RequireLowercase = true;
+                    //options.Password.RequireUppercase = true;
+                    //options.Password.RequireNonAlphanumeric = false;
+                    //options.Password.RequiredLength = 6;
+                })
+                .AddEntityFrameworkStores<AppIdentityDbContext>();
+
             #endregion
 
+            var app = builder.Build();
 
-            var app = webApplicationBuilder.Build();
+            #region Apply migrations & seed data on startup
 
-            #region Make automatic migration instead of writing update-database command in package manager console
-            // i need to make app do migration automatically when the application starts
-            using var scope = app.Services.CreateScope();
-            var services = scope.ServiceProvider;                          // ask for object from scoped services( di container) 
-            var _dbContext = services.GetRequiredService<StoreContext>();  // ask clr to create object from dbContext
-            var _identityDbContext = services.GetRequiredService<AppIdentityDbContext>();  // ask clr to create object from dbContext
-
-            var loggerFactory = services.GetRequiredService<ILoggerFactory>(); // ask clr to create object from loggerFactory to show error in obvious way
-            try
+            using (var scope = app.Services.CreateScope())
             {
-                await _dbContext.Database.MigrateAsync();  // Perform automatic migration( update database)
-                await StoreContextSeed.SeedAsync(_dbContext); // Seed the database with initial data
+                var services = scope.ServiceProvider;
+                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
-                await _identityDbContext.Database.MigrateAsync();  // Perform automatic migration( update database)
+                try
+                {
+                    var storeContext = services.GetRequiredService<StoreContext>();
+                    await storeContext.Database.MigrateAsync();
+                    await StoreContextSeed.SeedAsync(storeContext);
 
-                var userManager = services.GetRequiredService<UserManager<AppUser>>(); // ask clr to create object from userManager to create user in the database
-                await AppIdentityDbContextSeed.SeedUsersAsync(userManager); // Seed the database with initial data
+                    var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+                    await identityContext.Database.MigrateAsync();
+
+                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
+                }
+                catch (Exception ex)
+                {
+                    loggerFactory.CreateLogger<Program>()
+                        .LogError(ex, "An error occurred during migration.");
+                }
             }
-            catch (Exception ex)
-            {
-                // Handle any errors that occur during migration
-                loggerFactory.CreateLogger<Program>().LogError(ex, "An error occurred during migration.");  // write the error in the log file
-            }
+
             #endregion
 
-            #region Configure kestrel Middelwares
-            app.UseMiddleware<ExceptionMiddelware>();  // to handle the exceptions in a global way
+            #region Configure the HTTP request pipeline (middlewares)
 
-            // Configure the HTTP request pipeline.
-            // Configure the HTTP request pipeline.
+            app.UseMiddleware<ExceptionMiddelware>();           // global exception handling
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
-                // app.MapOpenApi();
             }
 
-            app.UseStatusCodePagesWithReExecute("/errors/{0}");     // to handle the status code errors in a global way
+            app.UseStatusCodePagesWithReExecute("/errors/{0}"); // global status-code error handling
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();                               // serve files from wwwroot
             app.UseAuthorization();
 
-            app.UseStaticFiles();  // to allow the application to serve static files (images, css, js, etc.) from the wwwroot folder
+            app.MapControllers();
 
-
-            app.MapControllers();  // is a middelware for routing
             #endregion
-
 
             app.Run();
         }
