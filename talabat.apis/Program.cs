@@ -8,9 +8,11 @@ using talabat.apis.Helpres;
 using talabat.apis.Middelwares;
 using Talabat.Core.Entites.Identity;
 using Talabat.Core.Repositories.Contract;
+using Talabat.Core.Services.Contract;
 using Talabat.Repository;
 using Talabat.Repository.Data;
 using Talabat.Repository.Identity;
+using Talabat.Services;
 
 namespace Talabat.Apis
 {
@@ -55,10 +57,11 @@ namespace Talabat.Apis
                 return ConnectionMultiplexer.Connect(redisConnection);
             });
 
-            // ---------- Repositories ----------
+            // ---------- Repositories ---------- (allow Dependency Injection)
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
             builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+            builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
 
             // ---------- AutoMapper ----------
             builder.Services.AddAutoMapper(cfg =>

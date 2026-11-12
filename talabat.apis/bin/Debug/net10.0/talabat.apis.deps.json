@@ -12,7 +12,8 @@
           "Microsoft.AspNetCore.OpenApi": "10.0.11",
           "Microsoft.EntityFrameworkCore.Tools": "10.0.12",
           "Swashbuckle.AspNetCore": "10.2.3",
-          "Talabat.Repository": "1.0.0"
+          "Talabat.Repository": "1.0.0",
+          "Talabat.Services": "1.0.0"
         },
         "runtime": {
           "talabat.apis.dll": {}
@@ -952,6 +953,18 @@
             "fileVersion": "1.0.0.0"
           }
         }
+      },
+      "Talabat.Services/1.0.0": {
+        "dependencies": {
+          "AutoMapper": "16.2.0",
+          "Talabat.Core": "1.0.0"
+        },
+        "runtime": {
+          "Talabat.Services.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -1373,6 +1386,11 @@
       "sha512": ""
     },
     "Talabat.Repository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Talabat.Services/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

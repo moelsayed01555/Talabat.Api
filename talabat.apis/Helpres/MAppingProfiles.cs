@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using talabat.apis.DTOs;
 using Talabat.Core.Entites;
+using Talabat.Core.Entites.Order_Aggregate;
 
 namespace talabat.apis.Helpres
 {
@@ -14,7 +15,10 @@ namespace talabat.apis.Helpres
                 .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom<ProductPictureUrlResolver>());
 
             CreateMap<CustomerBasketDto, CustomerBasket>();
+
             CreateMap<BasketItemDto, BasketItem>();
+
+            CreateMap<AddressDto, Address>();
         }
     }
 }

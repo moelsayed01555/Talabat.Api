@@ -387,3 +387,5 @@ D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\StackExchange.Redis.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\System.IO.Hashing.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Talabat.Services.dll
+D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Talabat.Services.pdb
