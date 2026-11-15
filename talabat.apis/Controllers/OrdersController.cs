@@ -39,5 +39,18 @@ namespace talabat.apis.Controllers
             return Ok(order);
         }
 
+
+
+        // بنجيب الاوردرات بتاع يوسر معين عن طريق الايميل بتاعه
+
+        [HttpGet] // GET api/orders
+        public async Task<ActionResult<IReadOnlyList<Talabat.Core.Entites.Order_Aggregate.Order>>> GetOrdersForUser(string email)
+        {
+            var orders = await _orderService.GetOrdersForUserAsync(email);
+
+            return Ok(orders);
+        }
+
+
     }
 }

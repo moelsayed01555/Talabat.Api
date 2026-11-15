@@ -12,14 +12,14 @@ namespace Talabat.Repository
         private readonly StoreContext _dbContext;
 
         // make a dictionary to hold all repositories that will be created in the unit of work
-        private readonly Dictionary<string, GenericRepository<BaseEntity>> _repositories;
+        private readonly Dictionary<string,object /*GenericRepository<BaseEntity>*/ > _repositories;
 
 
         // add constructor to inject the dbContext (ask clr to inject an object of type StoreContext)
         public UnitOfWork( StoreContext dbContext)
         {
             _dbContext = dbContext;
-            _repositories = new Dictionary<string, GenericRepository<BaseEntity>>();  // initialize the dictionary in the constructor
+            _repositories = new Dictionary<string, object /*GenericRepository<BaseEntity>*/ >();  // initialize the dictionary in the constructor
         }
 
 
@@ -30,7 +30,7 @@ namespace Talabat.Repository
             if (!_repositories.ContainsKey(key))  // check if the repository for this entity type already exists in the dictionary
             {
                 var repository = new GenericRepository<T>(_dbContext);  // create a new repository for this entity type
-                _repositories.Add(key, repository as GenericRepository<BaseEntity>);  // add the new repository to the dictionary
+                _repositories.Add(key, repository);  // add the new repository to the dictionary
             }
 
             return (IGenericRepository<T>)_repositories[key];

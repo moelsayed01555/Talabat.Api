@@ -6,6 +6,7 @@ using Talabat.Core.Entites;
 using Talabat.Core.Entites.Order_Aggregate;
 using Talabat.Core.Repositories.Contract;
 using Talabat.Core.Services.Contract;
+using Talabat.Core.Specifications.Order_Specs;
 
 namespace Talabat.Services
 {
@@ -37,7 +38,9 @@ namespace Talabat.Services
             //_orderRepo = orderRepo;
             #endregion
         }
-        public async Task<Order> CreateOrderAsync(string buyerEmail, string basketId, int deliveryMethodId, Address shippingAddress)
+
+        // --------- Create Order ---------
+        public async Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int deliveryMethodId, Address shippingAddress)
         {
             #region Before applying unit of work 
             //// step 1: get basket from redis
@@ -133,15 +136,34 @@ namespace Talabat.Services
             return order;
         }
 
+
+
+
+
+        // --------- Get Orders For User ---------
+        public Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
+        {
+            var ordersRepo = _unitOfWork.Repository<Order>();
+
+           // var orders = ordersRepo.GetAllAsync();    // get all orders from DB دي هترجعلي كل الاوردرات اللي موجودة في الداتا بيز وليس ل يوزر معين
+
+           var spec = new OrderSpecifications(buyerEmail);  // create a specification to get orders for a specific user 
+           var orders = ordersRepo.GetAllSpecAsync(spec); 
+
+            return orders;
+        }
+
+
+
+
+
+        // --------- Get Order By Id For User ---------
         public Task<Order> GetOrderByIdForUserAync(int OrderId, string buyerEmail)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
 
