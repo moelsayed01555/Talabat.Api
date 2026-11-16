@@ -168,7 +168,16 @@ namespace Talabat.Services
             return order;
         }
 
-        
+
+
+        // --------- Get Delivery Methods ---------
+        public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
+        {
+            var deliveryMethodsRepo = _unitOfWork.Repository<DeliveryMethod>();
+            var deliveryMethods = deliveryMethodsRepo.GetAllAsync();
+            return deliveryMethods;
+        }
+
     }
 }
 

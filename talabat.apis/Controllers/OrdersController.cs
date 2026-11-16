@@ -68,5 +68,14 @@ namespace talabat.apis.Controllers
             return Ok(_mapper.Map<Talabat.Core.Entites.Order_Aggregate.Order, OrderToReturnDto>(order));
         }
 
+
+        // بجيب كل الدليفري ميثودز اللي موجودة في الداتا بيز
+        [HttpGet("deliveryMethods")] // GET api/orders/deliveryMethods
+        public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
+        {
+            var deliveryMethods = await _orderService.GetDeliveryMethodsAsync();
+            return Ok(deliveryMethods);
+        }
+
     }
 }
