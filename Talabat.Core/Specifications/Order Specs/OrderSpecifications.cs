@@ -22,5 +22,15 @@ namespace Talabat.Core.Specifications.Order_Specs
 
 
         }
+
+
+        // This Constructor is used for get order by id for specific user
+        public OrderSpecifications(int orderId, string buyerEmail)
+            : base(o => o.Id == orderId && o.BuyerEmail == buyerEmail)     // Criteria --> ( o => o.Id == orderId && o.BuyerEmail == buyerEmail )
+        {
+            // -------- Add the includes to the order specification -------
+            Includes.Add(o => o.Items);    // Include the order items
+            Includes.Add(o => o.DeliveryMethod);    // Include the delivery method
+        }
     }
 }

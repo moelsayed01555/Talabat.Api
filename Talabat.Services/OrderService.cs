@@ -158,9 +158,14 @@ namespace Talabat.Services
 
 
         // --------- Get Order By Id For User ---------
-        public Task<Order> GetOrderByIdForUserAync(int OrderId, string buyerEmail)
+        public Task<Order?> GetOrderByIdForUserAync(int OrderId, string buyerEmail)
         {
-            throw new NotImplementedException();
+            var ordersRepo = _unitOfWork.Repository<Order>();
+
+            var spec = new OrderSpecifications(OrderId, buyerEmail);  // create a specification to get order by id for a specific user
+            var order = ordersRepo.GetSpecAsync(spec);
+
+            return order;
         }
 
         

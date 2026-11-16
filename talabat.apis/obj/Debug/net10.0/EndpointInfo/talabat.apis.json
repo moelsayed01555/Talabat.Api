@@ -277,17 +277,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/OrderToReturnDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/OrderToReturnDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/OrderToReturnDto"
                 }
               }
             }
@@ -315,7 +315,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Order"
+                    "$ref": "#/components/schemas/OrderToReturnDto"
                   }
                 }
               },
@@ -323,7 +323,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Order"
+                    "$ref": "#/components/schemas/OrderToReturnDto"
                   }
                 }
               },
@@ -331,8 +331,75 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Order"
+                    "$ref": "#/components/schemas/OrderToReturnDto"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderToReturnDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderToReturnDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderToReturnDto"
                 }
               }
             }
@@ -786,32 +853,6 @@
         },
         "additionalProperties": false
       },
-      "DeliveryMethod": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "shortName": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "cost": {
-            "type": "number",
-            "format": "double"
-          },
-          "deliveryTime": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "LoginDto": {
         "required": [
           "email",
@@ -827,53 +868,6 @@
           "password": {
             "minLength": 1,
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Order": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "buyerEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "orderDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderItem"
-            },
-            "nullable": true
-          },
-          "status": {
-            "$ref": "#/components/schemas/OrderStatus"
-          },
-          "shippingAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "deliveryMethodId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "deliveryMethod": {
-            "$ref": "#/components/schemas/DeliveryMethod"
-          },
-          "subtotal": {
-            "type": "number",
-            "format": "double"
-          },
-          "paymentIntentId": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -904,15 +898,24 @@
         },
         "additionalProperties": false
       },
-      "OrderItem": {
+      "OrderItemDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int32"
           },
-          "product": {
-            "$ref": "#/components/schemas/ProductItemOrdered"
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productName": {
+            "type": "string",
+            "nullable": true
+          },
+          "pictureUrl": {
+            "type": "string",
+            "nullable": true
           },
           "price": {
             "type": "number",
@@ -925,14 +928,57 @@
         },
         "additionalProperties": false
       },
-      "OrderStatus": {
-        "enum": [
-          0,
-          1,
-          2
-        ],
-        "type": "integer",
-        "format": "int32"
+      "OrderToReturnDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "buyerEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItemDto"
+            },
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "shippingAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "deliveryMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryMethodCost": {
+            "type": "number",
+            "format": "double"
+          },
+          "subtotal": {
+            "type": "number",
+            "format": "double"
+          },
+          "total": {
+            "type": "number",
+            "format": "double"
+          },
+          "paymentIntentId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "ProductBrand": {
         "type": "object",
@@ -1024,24 +1070,6 @@
             "items": {
               "$ref": "#/components/schemas/ProductDto"
             },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ProductItemOrdered": {
-        "type": "object",
-        "properties": {
-          "productId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "productName": {
-            "type": "string",
-            "nullable": true
-          },
-          "pictureUrl": {
-            "type": "string",
             "nullable": true
           }
         },

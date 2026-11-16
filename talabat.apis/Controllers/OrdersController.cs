@@ -24,7 +24,7 @@ namespace talabat.apis.Controllers
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost] // api/orders
-        public async Task<ActionResult<Talabat.Core.Entites.Order_Aggregate.Order>> CreateOrder( OrderDto orderDto)
+        public async Task<ActionResult<OrderToReturnDto>> CreateOrder( OrderDto orderDto)
         {
             // map addressDto to address to be able to send it to orderService to create order
             var address = _mapper.Map<AddressDto, Address>(orderDto.ShippingAddress);
@@ -36,7 +36,7 @@ namespace talabat.apis.Controllers
                 return BadRequest(new ApiErrorResponse(400));
             }
 
-            return Ok(order);
+            return Ok(_mapper.Map<Talabat.Core.Entites.Order_Aggregate.Order, OrderToReturnDto>(order));
         }
 
 
@@ -44,13 +44,29 @@ namespace talabat.apis.Controllers
         // بنجيب الاوردرات بتاع يوسر معين عن طريق الايميل بتاعه
 
         [HttpGet] // GET api/orders
-        public async Task<ActionResult<IReadOnlyList<Talabat.Core.Entites.Order_Aggregate.Order>>> GetOrdersForUser(string email)
+        public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrdersForUser(string email)
         {
             var orders = await _orderService.GetOrdersForUserAsync(email);
 
-            return Ok(orders);
+            return Ok(_mapper.Map<IReadOnlyList<Talabat.Core.Entites.Order_Aggregate.Order>, IReadOnlyList<OrderToReturnDto>>(orders));
         }
 
+
+
+        // بنجيب اوردر معين عن طريق الاوردر ايدي والايميل بتاع اليوزر
+        [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet("{id}")] // GET api/orders/1
+        public async Task<ActionResult<OrderToReturnDto>> GetOrderByIdForUser(int id, string email)
+        {
+            var order = await _orderService.GetOrderByIdForUserAync(id, email);
+            if (order == null)
+            {
+                return NotFound(new ApiErrorResponse(404));
+            }
+
+            return Ok(_mapper.Map<Talabat.Core.Entites.Order_Aggregate.Order, OrderToReturnDto>(order));
+        }
 
     }
 }

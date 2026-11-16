@@ -19,6 +19,16 @@ namespace talabat.apis.Helpres
             CreateMap<BasketItemDto, BasketItem>();
 
             CreateMap<AddressDto, Address>();
+
+            CreateMap<Order, OrderToReturnDto>()
+                 .ForMember(dest => dest.DeliveryMethod, opt => opt.MapFrom(src => src.DeliveryMethod.ShortName))
+                 .ForMember(dest => dest.DeliveryMethodCost, opt => opt.MapFrom(src => src.DeliveryMethod.Cost))
+                 .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.GetTotal()));
+
+            CreateMap<OrderItem, OrderItemDto>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Product.ProductId))
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+                .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom(src => src.Product.PictureUrl));
         }
     }
 }
