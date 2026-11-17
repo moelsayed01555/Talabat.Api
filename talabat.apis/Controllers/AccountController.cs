@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using talabat.apis.DTOs;
 using talabat.apis.Errors;
 using Talabat.Core.Entites.Identity;
+using Talabat.Core.Services.Contract;
 
 namespace talabat.apis.Controllers
 {
@@ -12,11 +13,17 @@ namespace talabat.apis.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IAuthService _authService;
 
-        public AccountController(UserManager<AppUser> userManager , SignInManager<AppUser> signInManager)  // constructor injection for the user manager and sign in manager
+        public AccountController(
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
+            IAuthService authService
+            )  // constructor injection for the user manager and sign in manager
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
+            this._authService = authService;
         }
 
         [HttpPost("login")]
@@ -30,11 +37,15 @@ namespace talabat.apis.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);    // CheckPasswordSignInAsync : checks on the password only , don't sign in
             if (!result.Succeeded) return Unauthorized(new ApiErrorResponse(401));
 
+
+            // create token for the user
+            var token = await _authService.CreateTokenAsync(user, _userManager);
+
             return Ok(new UserDto
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                Token = "token"
+                Token = token
             });
         }
 
@@ -62,11 +73,14 @@ namespace talabat.apis.Controllers
             if (!result.Succeeded)
                 return BadRequest(new ApiErrorResponse(400));
 
+            // create token for the user
+            var token = await _authService.CreateTokenAsync(user, _userManager);
+
             return Ok(new UserDto
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                Token = "token"
+                Token = token
             });
 
         }

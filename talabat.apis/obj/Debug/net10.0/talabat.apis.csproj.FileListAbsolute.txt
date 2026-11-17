@@ -389,3 +389,5 @@ D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Microsoft.AspNetCore.Identit
 D:\.Net Moo\projects\talabat.apis\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Talabat.Services.dll
 D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Talabat.Services.pdb
+D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\.Net Moo\projects\talabat.apis\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll

@@ -62,6 +62,7 @@ namespace Talabat.Apis
             builder.Services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
             builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
+            builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
             // ---------- AutoMapper ----------
             builder.Services.AddAutoMapper(cfg =>
