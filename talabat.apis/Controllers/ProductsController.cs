@@ -7,43 +7,48 @@ using talabat.apis.Errors;
 using talabat.apis.Helpres;
 using Talabat.Core.Entites;
 using Talabat.Core.Repositories.Contract;
+using Talabat.Core.Services.Contract;
 using Talabat.Core.Specifications.Product_Specs;
 
 namespace talabat.apis.Controllers
 {
-    //[Route("api/[controller]")] مش محتاجينهم خلاص 
-    //[ApiController]
     public class ProductsController : BaseApiController
     {
-        private readonly IGenericRepository<Product> _productsRpo;
-        private readonly IGenericRepository<ProductBrand> _brandsRpo;
-        private readonly IGenericRepository<ProductCategory> _categoriesRpo;
+        ///private readonly IGenericRepository<Product> _productsRpo;
+        ///private readonly IGenericRepository<ProductBrand> _brandsRpo;
+        ///private readonly IGenericRepository<ProductCategory> _categoriesRpo;
+        
         private readonly IMapper _mapper;
+        private readonly IProductService _productService;
 
-        public ProductsController( IGenericRepository<Product> productsRpo ,IGenericRepository<ProductBrand> brandsRpo ,IGenericRepository<ProductCategory> categoriesRpo ,IMapper mapper)
+
+        #region Before applying unit of work
+        //public ProductsController( IGenericRepository<Product> productsRpo ,IGenericRepository<ProductBrand> brandsRpo ,IGenericRepository<ProductCategory> categoriesRpo ,IMapper mapper)
+        //{
+        //    _productsRpo = productsRpo;
+        //    _brandsRpo = brandsRpo;
+        //    _categoriesRpo = categoriesRpo;
+        //    _mapper = mapper;
+        //}
+        #endregion
+        public ProductsController( IProductService productService , IMapper mapper)
         {
-            _productsRpo = productsRpo;
-            _brandsRpo = brandsRpo;
-            _categoriesRpo = categoriesRpo;
+            _productService = productService;
             _mapper = mapper;
         }
+
 
         // api/GetProducts  // [FromQuery] means read query from url header
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductDto>>> GetProducts([FromQuery] ProsuctSpecsParams specParams)     // criteria (null) => all products
         {
-            var spec = new ProductWithBrandAndCategorySpecifications(specParams);
-            var products = await _productsRpo.GetAllSpecAsync(spec);
+            var products = await _productService.GetProductsAsync(specParams);
 
-            var productsDto = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
+            var count = await _productService.GetCountAsync(specParams);   // for count pagination
 
-            var data = productsDto;     // data for pagination property class
+            var productDtoData = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
 
-            var countSpec = new ProductWithFilterationForCountSpecifications(specParams);
-
-            var count = await _productsRpo.GetCountAsync(countSpec);   // for count pagination
-
-            return Ok(new Pagination<ProductDto>(specParams.PageIndex , specParams.PageSize , count , data));
+            return Ok(new Pagination<ProductDto>(specParams.PageIndex , specParams.PageSize , count , productDtoData));
         }
 
 
@@ -53,14 +58,13 @@ namespace talabat.apis.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProductId(int id)
         {
-            var spec = new ProductWithBrandAndCategorySpecifications(id);
-            var product = await _productsRpo.GetSpecAsync(spec);
+            var product = await _productService.GetProductByIdAsync(id);
 
             if (product == null)
             {
-                // return NotFound(new ProblemDetails { Title = "Not Found", Detail = $"Product with id {id} not found" });
-                return NotFound(new ApiErrorResponse(404));  // instead of paaing anonomous object like above line
+                return NotFound(new ApiErrorResponse(404)); 
             }
+
             var productDto = _mapper.Map<Product, ProductDto>(product);
             return Ok(productDto);
         }
@@ -70,7 +74,7 @@ namespace talabat.apis.Controllers
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetBrands()
         {
-            var brands = await _brandsRpo.GetAllAsync();
+            var brands = await _productService.GetProductBrandsAsync();
 
             return Ok(brands);
         }
@@ -79,7 +83,7 @@ namespace talabat.apis.Controllers
         [HttpGet("categories")]
         public async Task<ActionResult<IReadOnlyList<ProductCategory>>> GetCategories()
         {
-            var categories = await _categoriesRpo.GetAllAsync();
+            var categories = await _productService.GetProductCategoriesAsync();
 
             return Ok(categories);
         }

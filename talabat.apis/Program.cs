@@ -63,6 +63,7 @@ namespace Talabat.Apis
             builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            builder.Services.AddScoped(typeof(IProductService), typeof(ProductService));
 
             // ---------- AutoMapper ----------
             builder.Services.AddAutoMapper(cfg =>
