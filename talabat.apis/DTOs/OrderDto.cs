@@ -5,8 +5,8 @@ namespace talabat.apis.DTOs
 {
     public class OrderDto
     {
-        [Required]
-        public string BuyerEmail { get; set; }
+        //[Required]
+        //public string BuyerEmail { get; set; }   // we don't need it because we will get the email from the token of the user that is logged in
         [Required]
         public string BasketId { get; set; }
         [Required]

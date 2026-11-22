@@ -167,13 +167,7 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "email",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IReadOnlyList\u00601[[talabat.apis.DTOs.OrderToReturnDto, talabat.apis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -198,11 +192,6 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
-      },
-      {
-        "Name": "email",
-        "Type": "System.String",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": [

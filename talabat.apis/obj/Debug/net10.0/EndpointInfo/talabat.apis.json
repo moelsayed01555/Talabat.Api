@@ -298,15 +298,6 @@
         "tags": [
           "Orders"
         ],
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -353,13 +344,6 @@
             "schema": {
               "type": "integer",
               "format": "int32"
-            }
-          },
-          {
-            "name": "email",
-            "in": "query",
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -939,15 +923,10 @@
       "OrderDto": {
         "required": [
           "basketId",
-          "buyerEmail",
           "deliveryMethodId"
         ],
         "type": "object",
         "properties": {
-          "buyerEmail": {
-            "minLength": 1,
-            "type": "string"
-          },
           "basketId": {
             "minLength": 1,
             "type": "string"

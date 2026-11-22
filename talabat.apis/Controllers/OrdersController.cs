@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
+using System.Security.Claims;
 using talabat.apis.DTOs;
 using talabat.apis.Errors;
 using Talabat.Core.Entites.Order_Aggregate;
@@ -9,6 +11,7 @@ using Talabat.Core.Services.Contract;
 
 namespace talabat.apis.Controllers
 {
+    [Authorize]
     public class OrdersController : BaseApiController
     {
         private readonly IOrderService _orderService;
@@ -26,10 +29,12 @@ namespace talabat.apis.Controllers
         [HttpPost] // api/orders
         public async Task<ActionResult<OrderToReturnDto>> CreateOrder( OrderDto orderDto)
         {
+            var buyerEmail = User.FindFirstValue(ClaimTypes.Email);  // get the email of the user that is logged in
+
             // map addressDto to address to be able to send it to orderService to create order
             var address = _mapper.Map<AddressDto, Address>(orderDto.ShippingAddress);
 
-            var order = await _orderService.CreateOrderAsync(orderDto.BuyerEmail , orderDto.BasketId , orderDto.DeliveryMethodId ,address);
+            var order = await _orderService.CreateOrderAsync(buyerEmail , orderDto.BasketId , orderDto.DeliveryMethodId ,address);
 
             if(order == null)
             {
@@ -44,9 +49,10 @@ namespace talabat.apis.Controllers
         // بنجيب الاوردرات بتاع يوسر معين عن طريق الايميل بتاعه
 
         [HttpGet] // GET api/orders
-        public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrdersForUser(string email)
+        public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrdersForUser(/*string email*/)
         {
-            var orders = await _orderService.GetOrdersForUserAsync(email);
+            var buyerEmail = User.FindFirstValue(ClaimTypes.Email);  // get the email of the user that is logged in
+            var orders = await _orderService.GetOrdersForUserAsync(buyerEmail);
 
             return Ok(_mapper.Map<IReadOnlyList<Talabat.Core.Entites.Order_Aggregate.Order>, IReadOnlyList<OrderToReturnDto>>(orders));
         }
@@ -57,9 +63,10 @@ namespace talabat.apis.Controllers
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("{id}")] // GET api/orders/1
-        public async Task<ActionResult<OrderToReturnDto>> GetOrderByIdForUser(int id, string email)
+        public async Task<ActionResult<OrderToReturnDto>> GetOrderByIdForUser(int id /*string email*/)
         {
-            var order = await _orderService.GetOrderByIdForUserAync(id, email);
+            var buyerEmail = User.FindFirstValue(ClaimTypes.Email);  // get the email of the user that is logged in
+            var order = await _orderService.GetOrderByIdForUserAsync(id, buyerEmail);
             if (order == null)
             {
                 return NotFound(new ApiErrorResponse(404));
