@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -38,7 +39,8 @@ namespace talabat.apis.Controllers
         }
 
 
-        // api/GetProducts  // [FromQuery] means read query from url header
+        //Get : api/Products  // [FromQuery] means read query from url header
+        [Authorize/*(AuthenticationSchemes = "Bearer")*/]
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductDto>>> GetProducts([FromQuery] ProsuctSpecsParams specParams)     // criteria (null) => all products
         {

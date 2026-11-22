@@ -1,8 +1,11 @@
-using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
+using System.Text;
+using System.Text.Json.Serialization;
 using talabat.apis.Errors;
 using talabat.apis.Helpres;
 using talabat.apis.Middelwares;
@@ -101,6 +104,28 @@ namespace Talabat.Apis
                 })
                 .AddEntityFrameworkStores<AppIdentityDbContext>();
 
+            // ---------- Authentication ----------
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  // Add Authentication Handler with scheme "Bearer" --> "Bearer" became the default
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(   options =>
+            {
+                // configure the authentication handler
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"])),
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromDays(double.Parse(builder.Configuration["JWT:DurationInDays"]))
+                };
+            });
+
+
             #endregion
 
             var app = builder.Build();
@@ -147,9 +172,9 @@ namespace Talabat.Apis
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();                               // serve files from wwwroot
-            app.UseAuthorization();
-
             app.MapControllers();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             #endregion
 
