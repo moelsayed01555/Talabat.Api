@@ -23,7 +23,6 @@ namespace talabat.apis.Controllers
             _mapper = mapper;
         }
 
-
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost] // api/orders

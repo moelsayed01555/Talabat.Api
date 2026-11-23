@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using talabat.apis.DTOs;
 using talabat.apis.Errors;
+using talabat.apis.Extensions;
 using Talabat.Core.Entites.Identity;
 using Talabat.Core.Services.Contract;
 
@@ -15,12 +20,16 @@ namespace talabat.apis.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IAuthService _authService;
 
+        public IMapper _mapper { get; }
+
         public AccountController(
+            IMapper mapper,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             IAuthService authService
             )  // constructor injection for the user manager and sign in manager
         {
+            _mapper = mapper;
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._authService = authService;
@@ -85,6 +94,40 @@ namespace talabat.apis.Controllers
 
         }
 
+
+
+
+        [Authorize]
+        [HttpGet]   //GET : /api/account
+        public async Task<ActionResult<UserDto>> GetCurrentUser()
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email);  // get the email of the user that is logged in
+
+            //بمعلومية الايميل اقدر اعرف مين المستخدم اللي عامل لوجن
+            var user = await _userManager.FindByEmailAsync(email);
+
+            var userDto = new UserDto
+            {
+                Email = user.Email,
+                DisplayName = user.DisplayName,
+                Token = await _authService.CreateTokenAsync(user, _userManager)
+            };
+
+            return Ok(userDto);
+        }
+
+
+
+        [Authorize]
+        [HttpGet("address")]
+        public async Task<ActionResult<UserAddressDto>> GetCurrentAddress()
+        {
+            var user = await _userManager.FindUserWithAddressAsync(User);
+
+            var address = _mapper.Map<UserAddressDto>(user.Address);
+
+            return Ok(address);
+        }
 
     }
 }

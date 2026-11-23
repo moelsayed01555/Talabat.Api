@@ -20,6 +20,8 @@ namespace talabat.apis.Helpres
 
             CreateMap<AddressDto, Address>();
 
+            CreateMap<Talabat.Core.Entites.Identity.Address, UserAddressDto>().ReverseMap();
+
             CreateMap<Order, OrderToReturnDto>()
                  .ForMember(dest => dest.DeliveryMethod, opt => opt.MapFrom(src => src.DeliveryMethod.ShortName))
                  .ForMember(dest => dest.DeliveryMethodCost, opt => opt.MapFrom(src => src.DeliveryMethod.Cost))
