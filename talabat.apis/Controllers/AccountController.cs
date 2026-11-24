@@ -58,13 +58,16 @@ namespace talabat.apis.Controllers
             });
         }
 
+
+
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto model)
         {
             // check if the user already exists in the database
             var userExists = await _userManager.FindByEmailAsync(model.Email);
+
             if (userExists != null) 
-               return BadRequest(new ApiValidationErrorResponse { Errors = new[] { "Email already exists" } });
+               return BadRequest(new ApiErrorResponse(404) );
 
             // create a new user
             var user = new AppUser
@@ -129,5 +132,44 @@ namespace talabat.apis.Controllers
             return Ok(address);
         }
 
+
+        [Authorize]
+        [HttpPut("address")]
+        public async Task<ActionResult<UserAddressDto>> UpdateUserAddress(UserAddressDto updatedAddress)
+        {
+            var user = await _userManager.FindUserWithAddressAsync(User);
+
+            if (user is null) return Unauthorized();
+
+            if (user.Address is null)
+            {
+                // اليوزر ماعندوش عنوان لسه: ننشئ واحد جديد
+                user.Address = _mapper.Map<Address>(updatedAddress);
+            }
+            else
+            {
+                // نعدّل العنوان الموجود (الـ Id بيفضل زي ما هو)
+                _mapper.Map(updatedAddress, user.Address);
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+                return BadRequest(new ApiErrorResponse(400));
+
+            return Ok(_mapper.Map<UserAddressDto>(user.Address));
+        }
+
+
+
+        // GET: api/account/emailexists?email=ahmed@gmail.com
+        [HttpGet("emailexists")]
+        public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return BadRequest(new ApiErrorResponse(400, "Email is required"));
+
+            return await _userManager.FindByEmailAsync(email) is not null;
+        }
     }
 }
